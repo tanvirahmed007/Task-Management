@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const assignedUat = searchParams.get("assigned_uat");
 
     let queryString = "";
-    let queryParams: any[] = [];
+    let queryParams: unknown[] = [];
 
     if (userRole === "7777") {
       queryString = `
@@ -186,25 +186,28 @@ export async function POST(request: Request) {
       task_id: task_id 
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("=== ERROR IN TASK CREATION ===");
-    console.error("Error name:", error.name);
-    console.error("Error message:", error.message);
-    console.error("Error code:", error.code);
-    console.error("Error stack:", error.stack);
-    
-    if (error.code === '23505') { // Unique violation
+    console.error("Error name:", (error as Error).name);
+    console.error("Error message:", (error as Error).message);
+    if (typeof error === "object" && error !== null && "code" in error) {
+      
+      console.error("Error code:", (error as any).code);
+    }
+    console.error("Error stack:", (error as Error).stack);
+
+    if ((error as any).code === '23505') { // Unique violation
       console.error("Duplicate task ID error");
       return NextResponse.json({ error: "Task ID already exists" }, { status: 400 });
     }
-    
-    if (error.code === '42P01') { // Table doesn't exist
+
+    if ((error as any).code === '42P01') { // Table doesn't exist
       console.error("Table doesn't exist error");
       return NextResponse.json({ error: "Tasks table not found" }, { status: 500 });
     }
     
     console.error("Unknown database error");
-    return NextResponse.json({ error: "Database error: " + error.message }, { status: 500 });
+    return NextResponse.json({ error: "Database error: " + (error as Error).message }, { status: 500 });
   }
 }
 
@@ -234,8 +237,8 @@ export async function DELETE(request: Request) {
       task_id: task_id 
     })
 
-  } catch (error: any) {
-    console.error("Error deleting task:", error)
+  } catch (error: unknown) {
+    console.error("Error deleting task:", (error as Error).message)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
@@ -321,10 +324,10 @@ export async function PUT(request: Request) {
       task_id: task_id 
     })
 
-  } catch (error: any) {
-    console.error("Error updating task:", error)
+  } catch (error: unknown) {
+    console.error("Error updating task:", (error as Error).message)
     return NextResponse.json({ 
-      error: "Database error: " + error.message 
+      error: "Database error: " + (error as Error).message 
     }, { status: 500 })
   }
 }
@@ -438,10 +441,10 @@ export async function PATCH(request: Request) {
       task_id: task_id 
     })
 
-  } catch (error: any) {
-    console.error("Error updating task status:", error)
+  } catch (error: unknown) {
+    console.error("Error updating task status:", (error as Error).message)
     return NextResponse.json({ 
-      error: "Database error: " + error.message 
+      error: "Database error: " + (error as Error).message 
     }, { status: 500 })
   }
 }
