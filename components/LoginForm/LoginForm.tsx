@@ -21,7 +21,7 @@ export function LoginForm() {
 
     try {
       // Corrected endpoint and parameter name
-      const response = await fetch('/Api/auth/signin', {
+      const response = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
