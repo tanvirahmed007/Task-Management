@@ -187,7 +187,7 @@ const fetchTasks = async () => {
     });
     
     // Build URL based on user role
-    let url = `/Api/Task?user_role=${user.user_role}`;
+    let url = `/api/Task?user_role=${user.user_role}`;
     
     if (user.user_role === 7777) {
       // Developer: need team_id and user_id
@@ -237,7 +237,7 @@ const fetchTasks = async () => {
 
   const fetchUatMembers = async () => {
     try {
-      const response = await fetch('/Api/users?user_role=3333')
+      const response = await fetch('/api/users?user_role=3333')
       console.log(response)
       if (response.ok) {
         const data = await response.json()
@@ -328,7 +328,7 @@ const fetchTasks = async () => {
 
     setAssigningUat(true)
     try {
-      const response = await fetch('/Api/Task/uat', {
+      const response = await fetch('/api/Task/uat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -367,7 +367,7 @@ const fetchTasks = async () => {
     if (!user?.user_team) return
     
     try {
-      const response = await fetch(`/Api/team/members?team_id=${user.user_team}`)
+      const response = await fetch(`/api/team/members?team_id=${user.user_team}`)
       if (response.ok) {
         const data = await response.json()
         setTeamMembers(data.members || [])
@@ -396,7 +396,7 @@ const fetchTasks = async () => {
 
     setDeletingTaskId(taskId)
     try {
-      const response = await fetch(`/Api/Task`, {
+      const response = await fetch(`/api/Task`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -479,7 +479,7 @@ const fetchTasks = async () => {
         return
       }
 
-      const response = await fetch('/Api/Task', {
+      const response = await fetch('/api/Task', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -525,7 +525,7 @@ const fetchTasks = async () => {
   }
 
   try {
-    const response = await fetch('/Api/Task/uat-complete', {
+    const response = await fetch('/api/Task/uat-complete', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -570,7 +570,7 @@ const fetchTasks = async () => {
   }
 
   try {
-    const response = await fetch('/Api/Task', {
+    const response = await fetch('/api/Task', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
